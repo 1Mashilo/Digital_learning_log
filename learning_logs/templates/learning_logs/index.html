@@ -1,0 +1,11 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+  <div class="p-3 mb-4 bg-light border rounded-3">
+    <div class="container-fluid py-4">
+      <h1 class="display-3">Track your learning.</h1>
+      <p class="lead">Navigate the vast expanse of knowledge and capture your learning experiences with your very own Learning Log. This personalized digital notebook empowers you to document your academic pursuits. Each entry serves as a testament to your dedication and a reminder of the knowledge you've acquired.</p>
+      <a class="btn btn-primary btn-lg mt-1" href="{% url 'accounts:register' %}">Register &raquo;</a>
+    </div>
+  </div>
+{% endblock page_header %}

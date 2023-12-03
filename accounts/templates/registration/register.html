@@ -1,0 +1,17 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+    <h1>Register</h1>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form action="{% url 'accounts:register' %}" method='post' class="mt-4">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
