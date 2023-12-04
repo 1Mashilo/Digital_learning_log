@@ -1,23 +1,35 @@
 {% extends 'learning_logs/base.html' %}
 
 {% block page_header %}
-    <h1>Topics</h1>
+<h1 class="display-4 text-center page-header">Topics</h1>
 {% endblock page_header %}
 
 {% block content %}
-    <ul class="list-group border-bottom pb-2 mb-4">
-        {% for topic in topics %}
-            <li class="list-group-item border-0">
-                <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic.text }}</a>
-                <span class="float-end">
-                    <a href="{% url 'learning_logs:delete_topic' topic.id %}" class="btn btn-danger btn-sm">
-                        Delete
-                    </a>
-                </span>
-            </li>
-        {% empty %}
-            <li class="list-group-item border-0">No topics have been added yet.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'learning_logs:new_topic' %}" class="btn btn-primary">Add a new topic</a>
+    <div class="container mt-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for topic in topics %}
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ topic.text }}</h5>
+                            <p class="card-text">Explore your learning journey in this topic.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'learning_logs:topic' topic.id %}" class="btn btn-primary">Explore</a>
+                                <a href="{% url 'learning_logs:delete_topic' topic.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col text-center">
+                    <p class="text-muted">No topics have been added yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row mt-3">
+            <div class="col text-center">
+                <a href="{% url 'learning_logs:new_topic' %}" class="btn btn-primary">Add a new topic</a>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

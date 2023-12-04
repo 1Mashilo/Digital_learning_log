@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Topic, Entry
 from .forms import TopicForm,  EntryForm
 from django.http import Http404
+from django.utils.html import mark_safe
 
 def index(request):
     """
@@ -69,13 +70,12 @@ def new_topic(request):
         form = TopicForm(data=request.POST)
         if form.is_valid():
             new_topic = form.save(commit=False)
-            new_topic.owner = request.user  # Set the owner to the current user
+            new_topic.owner = request.user  
             new_topic.save()
             return redirect('learning_logs:topics')
 
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
-
 
 @login_required
 def new_entry(request, topic_id):
@@ -103,7 +103,8 @@ def new_entry(request, topic_id):
 
     context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/new_entry.html', context)
-    
+
+
 @login_required
 def edit_entry(request, entry_id):
     """
@@ -116,16 +117,21 @@ def edit_entry(request, entry_id):
     Returns:
         - HttpResponse
     """
-    entry = Entry.objects.get(id=entry_id)
+    entry = get_object_or_404(Entry, id=entry_id)
     topic = entry.topic
 
-    if request.method != 'POST':
-        form = EntryForm(instance=entry)
-    else:
-        form = EntryForm(instance=entry, data=request.POST)
+    if request.method == 'POST':
+        form = EntryForm(request.POST, instance=entry)
         if form.is_valid():
-            form.save()
+            # Mark the content as safe before saving it
+            entry = form.save(commit=False)
+            entry.text = mark_safe(entry.text)
+            entry.save()
             return redirect('learning_logs:topic', topic_id=topic.id)
+        else:
+            print("Form errors:", form.errors)
+    else:
+        form = EntryForm(instance=entry)
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)

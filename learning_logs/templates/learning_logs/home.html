@@ -1,0 +1,23 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+<section class="hero" style="background-color: #a4f1c2; background-image: url(https://yoursite.com/path/to/subtle/leaf/texture.png);">
+  <div class="container text-center">
+    <h1 class="display-3">Your Digital Learning Journey Starts Here</h1>
+    <p class="lead">Capture and organize your knowledge with ease. The Learning Log is your companion in the pursuit of wisdom.</p>
+    <a class="btn btn-primary btn-lg mt-3" href="{% url 'accounts:register' %}" role="button">Start Logging</a>
+  </div>
+</section>
+
+<hr class="mt-5 mb-4">
+{% endblock page_header %}
+
+{% block content %}
+<section class="features">
+  <div class="container">
+    <div class="row">
+      <!-- Feature items go here -->
+    </div>
+  </div>
+</section>
+{% endblock content %}

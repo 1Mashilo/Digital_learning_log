@@ -1,11 +1,56 @@
 {% extends 'learning_logs/base.html' %}
 
 {% block page_header %}
-  <div class="p-3 mb-4 bg-light border rounded-3">
-    <div class="container-fluid py-4">
-      <h1 class="display-3">Track your learning.</h1>
-      <p class="lead">Navigate the vast expanse of knowledge and capture your learning experiences with your very own Learning Log. This personalized digital notebook empowers you to document your academic pursuits. Each entry serves as a testament to your dedication and a reminder of the knowledge you've acquired.</p>
-      <a class="btn btn-primary btn-lg mt-1" href="{% url 'accounts:register' %}">Register &raquo;</a>
-    </div>
-  </div>
+  {% if user.is_authenticated %}
+    <!-- Custom hero section for authenticated users -->
+    <section class="hero" style="background-color: #2c3e50;">
+      <div class="container text-center">
+        <h1 class="display-3">Welcome Back, {{ user.username }}!</h1>
+        <p class="lead">Explore and continue your learning journey with the Learning Log.</p>
+        <a class="btn btn-primary btn-lg mt-3" href="{% url 'learning_logs:topics' %}" role="button">Continue Learning</a>
+      </div>
+    </section>
+  {% else %}
+    <!-- Original hero section for non-authenticated users -->
+    <section class="hero" style="background-color: #4cb8bb; background-image: url(https://yoursite.com/path/to/subtle/leaf/texture.png);">
+      <div class="container text-center">
+        <h1 class="display-3">Your Digital Learning Journey Starts Here</h1>
+        <p class="lead">Capture and organize your knowledge with ease. The Learning Log is your companion in the pursuit of wisdom.</p>
+        <a class="btn btn-primary btn-lg mt-3" href="{% url 'accounts:register' %}" role="button">Start Logging</a>
+      </div>
+    </section>
+
+    <hr class="mt-5 mb-4">
+  {% endif %}
 {% endblock page_header %}
+
+{% block content %}
+  <!-- Add your content here -->
+  <section class="features">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="feature-item bg-f2f2f2">
+            <i class="bi bi-journal" style="color: green;"></i>
+            <h3>Organize</h3>
+            <p>Keep your learning materials neatly organized by creating topics and entries.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-item bg-f2f2f2">
+            <i class="bi bi-check2" style="color: blue;"></i>
+            <h3>Track Progress</h3>
+            <p>Monitor your learning progress with a visual representation of completed topics.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-item bg-f2f2f2">
+            <i class="bi bi-pencil" style="color: purple;"></i>
+            <h3>Reflect</h3>
+            <p>Document your thoughts and reflections on each learning experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

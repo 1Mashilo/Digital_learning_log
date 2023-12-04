@@ -1,16 +1,38 @@
 {% extends 'learning_logs/base.html' %}
 
 {% block page_header %}
-    <h1>New Topic</h1>
+    <h1 class="mb-4">Create a New Topic</h1>
 {% endblock page_header %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <form action="{% url 'learning_logs:new_topic' %}" method='post' class="mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{% url 'learning_logs:new_topic' %}" method="post" class="mt-4">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Add Topic</button>
+
+                <!-- Display the form using as_p -->
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+
+                <!-- Or display individual fields with custom styling -->
+                <div class="mb-3">
+                    <label for="id_name" class="form-label">Topic Name</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div class="invalid-feedback">{{ form.name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Description</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="invalid-feedback">{{ form.description.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Topic</button>
             </form>
         </div>
     </div>
