@@ -129,3 +129,41 @@ CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Import the Config class from platformshconfig module
+from platformshconfig import Config
+
+# Create an instance of the Config class
+config = Config()
+
+# Check if the current environment is a valid Platform.sh environment
+if config.is_valid_platform():
+    # Add '.platformsh.site' to the ALLOWED_HOSTS setting
+    ALLOWED_HOSTS.append('.platformsh.site')
+
+    # Check if the 'appDir' property is present in the configuration
+    if config.appDir:
+        # Set the STATIC_ROOT to the 'static' directory within the appDir
+        STATIC_ROOT = Path(config.appDir) / 'static'
+
+    # Check if the 'projectEntropy' property is present in the configuration
+    if config.projectEntropy:
+        # Set the SECRET_KEY to the 'projectEntropy' value
+        SECRET_KEY = config.projectEntropy
+
+    # Check if the code is not running in a build environment
+    if not config.in_build():
+        # Retrieve database credentials from the configuration
+        db_settings = config.credentials('database')
+
+        # Configure the DATABASES setting for Django
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': db_settings['path'],
+                'USER': db_settings['username'],
+                'PASSWORD': db_settings['password'],
+                'HOST': db_settings['host'],
+                'PORT': db_settings['port'],
+            },
+        }

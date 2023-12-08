@@ -1,0 +1,37 @@
+name: "ll_project"   # The name of your Platform.sh application.
+type: "python:3.10"  # The runtime type for your application.
+
+relationships:       # Defines relationships with other services, like databases.
+  database: "db:postgresql"
+
+web:                 # Configuration for the app when exposed to the web.
+  upstream:
+    socket_family: unix  # Defines the socket family for communication.
+  commands:
+    start: "gunicorn -w 4 -b unix:$SOCKET ll_project.wsgi:application"  # Command to start the Gunicorn server.
+  locations:
+    "/":
+      passthru: true   # Forwards requests to the app specified in the "start" command.
+    "/static":        # Configurations for serving static files.
+      root: "static"
+      expires: 1h
+      allow: true
+
+# The size of the persistent disk of the application (in MB).
+disk: 512
+
+mounts:              # Local read/write mount for logs.
+  "logs":
+    source: local
+    source_path: logs
+
+hooks:               # Hooks executed at various points in the lifecycle of the application.
+  build: |
+    pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install -r requirements_remote.txt
+    mkdir logs
+    python manage.py collectstatic
+    rm -rf logs
+  deploy: |
+    python manage.py migrate
