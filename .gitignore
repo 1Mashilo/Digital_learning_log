@@ -17,3 +17,5 @@ __pycache__/
 # Ignore local settings file
 *.env
 *.env.*
+
+__pycache__/
